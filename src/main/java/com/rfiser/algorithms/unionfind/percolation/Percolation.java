@@ -21,16 +21,16 @@ public class Percolation {
                     sites[i][j] = 0;
                 }
             }
-            virtualBottomSite = n * n;
-            virtualTopSite = virtualBottomSite - 1;
-            uf = new WeightedQuickUnionUF(n * n + 1);
+            virtualTopSite = n * n;
+            virtualBottomSite = virtualTopSite + 1;
+            uf = new WeightedQuickUnionUF(n * n + 2);
         }
 
     }
 
     // open site (row, col) if it is not open already
     public void open(int row, int col) {
-        if(row < 1 || col < 1) throw new IndexOutOfBoundsException("row or col should be greater or equal to 1");
+        if (row < 1 || col < 1) throw new IndexOutOfBoundsException("row or col should be greater or equal to 1");
         else {
             if (!isOpen(row, col)) {
                 sites[row - 1][col - 1] = 1;
@@ -42,31 +42,31 @@ public class Percolation {
     }
 
     private void connectNeighbouringOpenSites(int row, int col) {
-        if (row == 0) {
-            uf.union(row * n + col, virtualTopSite);
+        if (row == 1) {
+            uf.union((row - 1) * n + col - 1, virtualTopSite);
         }
 
-        if (row == n - 1) {
-            uf.union(row * n + col, virtualBottomSite);
+        if (row == n) {
+            uf.union((row - 1) * n + col - 1, virtualBottomSite);
         }
 
-        if (row - 1 >= 0 && isOpen(row - 1, col)) uf.union(row * n + col, (row - 1) * n + col);
-        if (row + 1 < n && isOpen(row + 1, col)) uf.union(row * n + col, (row + 1) * n + col);
-        if (col - 1 >= 0 && isOpen(row, col - 1)) uf.union(row * n + col, row * n + col - 1);
-        if (col + 1 < n && isOpen(row, col + 1)) uf.union(row * n + col, row * n + col + 1);
+        if (row - 2 >= 0 && isOpen(row - 1, col)) uf.union((row - 1) * n + col - 1, (row - 2) * n + col - 1);
+        if (row + 1 <= n && isOpen(row + 1, col)) uf.union((row - 1) * n + col - 1, row * n + col - 1);
+        if (col - 2 >= 0 && isOpen(row, col - 1)) uf.union((row - 1) * n + col - 1, (row - 1) * n + col - 2);
+        if (col + 1 <= n && isOpen(row, col + 1)) uf.union((row - 1) * n + col - 1, (row - 1) * n + col);
 
     }
 
     // is site (row, col) open?
     public boolean isOpen(int row, int col) {
-        if(row < 1 || col < 1) throw new IndexOutOfBoundsException("row or col should be greater or equal to 1");
+        if (row < 1 || col < 1) throw new IndexOutOfBoundsException("row or col should be greater or equal to 1");
         else return sites[row - 1][col - 1] == 1;
     }
 
     // is site (row, col) full?
     public boolean isFull(int row, int col) {
-        if(row < 1 || col < 1) throw new IndexOutOfBoundsException("row or col should be greater or equal to 1");
-        else return uf.connected(row * n + col, virtualTopSite);
+        if (row < 1 || col < 1) throw new IndexOutOfBoundsException("row or col should be greater or equal to 1");
+        else return uf.connected((row - 1) * n + col - 1, virtualTopSite);
     }
 
     // number of open sites
@@ -77,10 +77,5 @@ public class Percolation {
     // does the system percolate?
     public boolean percolates() {
         return uf.connected(virtualBottomSite, virtualTopSite);
-    }
-
-    // test client (optional)
-    public static void main(String[] args) {
-
     }
 }
