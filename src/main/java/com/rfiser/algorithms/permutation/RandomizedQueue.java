@@ -18,18 +18,16 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     }
 
     /**
-     * is the queue empty?
+     * Is the queue empty?
      *
-     * @return
+     * @return true if the queue is empty
      */
     public boolean isEmpty() {
         return N == 0;
     }
 
     /**
-     * return the number of items on the queue
-     *
-     * @return
+     * Return the number of items on the queue
      */
     public int size() {
         return N;
