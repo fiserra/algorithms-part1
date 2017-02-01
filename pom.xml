@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.rfiser</groupId>
-  <artifactId>algorithms-part1</artifactId>
+  <artifactId>f1</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
