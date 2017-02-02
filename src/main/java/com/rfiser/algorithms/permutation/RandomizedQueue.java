@@ -63,13 +63,13 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
      * @throws NoSuchElementException
      */
     public Item dequeue() throws NoSuchElementException {
-        if (N == 0) {
+        if (isEmpty()) {
             throw new NoSuchElementException();
         } else {
-            int randomIndex = StdRandom.uniform(0, N);
+            int randomIndex = StdRandom.uniform(N);
             final Item item = items[randomIndex];
-            items[randomIndex] = null;
-            N--;
+            items[randomIndex] = items[--N];
+            items[N] = null;
             if (N > 0 && N == items.length / 4) resize(items.length / 2);
             return item;
         }
@@ -79,10 +79,10 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
      * Return (but do not remove) a random item
      */
     public Item sample() {
-        if (N == 0) {
+        if (isEmpty()) {
             throw new NoSuchElementException();
         } else {
-            int randomIndex = StdRandom.uniform(0, N);
+            int randomIndex = StdRandom.uniform(N);
             return items[randomIndex];
         }
     }
@@ -91,12 +91,12 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
      * Return an independent iterator over items in random order
      */
     public Iterator<Item> iterator() {
-        return null;
+        return new RandomQueueIterator();
     }
 
     private class RandomQueueIterator implements Iterator<Item> {
         public boolean hasNext() {
-            return N > 0;
+            return !isEmpty();
         }
 
         public Item next() {
