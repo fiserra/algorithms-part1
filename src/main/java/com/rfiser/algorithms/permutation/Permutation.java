@@ -1,10 +1,11 @@
 package com.rfiser.algorithms.permutation;
 
 import edu.princeton.cs.algs4.StdIn;
+import edu.princeton.cs.algs4.StdOut;
 
 public class Permutation {
     public static void main(String[] args) {
-        final int k = StdIn.readInt();
+        final int k = Integer.parseInt(args[0]);
         final RandomizedQueue<String> queue = new RandomizedQueue<String>();
 
         while (!StdIn.isEmpty()) {
@@ -13,7 +14,7 @@ public class Permutation {
         }
 
         for (int i = 0; i < k; i++) {
-            System.out.println(queue.dequeue());
+            StdOut.println(queue.dequeue());
         }
     }
 }

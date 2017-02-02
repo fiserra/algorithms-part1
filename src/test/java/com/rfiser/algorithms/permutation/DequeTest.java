@@ -39,6 +39,18 @@ public class DequeTest {
         assertTrue(deque.size() == 2);
     }
 
+    @Test
+    public void addFirstBug() throws Exception {
+        final Deque<Integer> deque = new Deque<Integer>();
+        deque.addFirst(1);
+        deque.addFirst(2);
+        assertTrue(deque.removeLast() == 1);
+        Iterator<Integer> it = deque.iterator();
+        assertTrue(it.hasNext());
+        assertTrue(it.next() == 2);
+        assertFalse(it.hasNext());
+    }
+
     @Test(expected = NullPointerException.class)
     public void addFirstNullPointerException() throws Exception {
         final Deque<Integer> deque = new Deque<Integer>();
@@ -114,8 +126,8 @@ public class DequeTest {
         assertFalse(iterator.hasNext());
     }
 
-    @Test(expected = NullPointerException.class)
-    public void iteratorNullPointerException() throws Exception {
+    @Test(expected = NoSuchElementException.class)
+    public void iteratorNoSuchElementException() throws Exception {
         final Deque<Integer> deque = new Deque<Integer>();
         deque.addLast(1);
 

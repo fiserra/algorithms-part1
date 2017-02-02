@@ -89,17 +89,17 @@ public class Deque<Item> implements Iterable<Item> {
      * @return the item from the front
      */
     public Item removeFirst() {
+        if (first == null) throw new NoSuchElementException();
+        final Item item = first.item;
+        first = first.next;
         if (first != null) {
-            final Item item = first.item;
-            if (first == last) {
-                last = null;
-            }
-            first = first.next;
-            size--;
-            return item;
+            first.prev = null;
         } else {
-            throw new NoSuchElementException();
+            last = null;
         }
+        size--;
+        return item;
+
     }
 
     /**
@@ -108,17 +108,18 @@ public class Deque<Item> implements Iterable<Item> {
      * @return the last item
      */
     public Item removeLast() throws NoSuchElementException {
+        if (last == null) throw new NoSuchElementException();
+        final Item item = last.item;
+        last = last.prev;
         if (last != null) {
-            final Item item = last.item;
-            if (first == last) {
-                first = null;
-            }
-            last = last.prev;
-            size--;
-            return item;
+            last.next = null;
         } else {
-            throw new NoSuchElementException();
+            first = null;
         }
+
+        size--;
+        return item;
+
     }
 
     /**
@@ -139,9 +140,13 @@ public class Deque<Item> implements Iterable<Item> {
         }
 
         public Item next() {
-            final Item currentItem = current.item;
-            current = current.next;
-            return currentItem;
+            if (hasNext()) {
+                final Item currentItem = current.item;
+                current = current.next;
+                return currentItem;
+            } else {
+                throw new NoSuchElementException();
+            }
         }
 
         public void remove() {
